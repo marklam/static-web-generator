@@ -1,8 +1,8 @@
 module Main
 
-open Fable.Import
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
+open Fable.Core
+open Fable.React
+open Fable.React.Props
 open StaticWebGenerator
 open Fulma
 
@@ -14,9 +14,9 @@ type IPerson =
 // Make sure to always resolve paths to avoid conflicts in generated JS files
 // Check fable-splitter README for info about ${entryDir} macro
 
-let markdownPath = IO.resolve "${entryDir}/../README.md"
-let dataPath = IO.resolve "${entryDir}/../data/people.json"
-let indexPath = IO.resolve "${entryDir}/../deploy/index.html"
+let markdownPath = IO.resolve "${entryDir}/../../README.md"
+let dataPath = IO.resolve "${entryDir}/../../data/people.json"
+let indexPath = IO.resolve "${entryDir}/../../deploy/index.html"
 
 let createTable() =
     let createHead (headers: string list) =
