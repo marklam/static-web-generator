@@ -1,16 +1,18 @@
 module StaticWebGenerator
 
 open System.Text.RegularExpressions
+open Fable
+
 open Fable.Core.JsInterop
-open Fable.Import
-open Fable.Helpers.React
-open Fable.Helpers.React.Props
-module NodeGlobals = Fable.Import.Node.Globals
-module Node = Fable.Import.Node.Exports
+open Fable.React
+open Fable.React.Props
+open Fable.Core
+
+module Node = Node.Api
 
 module private Util =
   let highlight: obj = importAll "highlight.js"
-  let marked: obj = importDefault "marked"
+  let marked: obj = import "marked" "marked"
 
   marked?setOptions(createObj [
     "highlight" ==> fun code lang ->
@@ -33,7 +35,7 @@ module private Util =
 
 /// Parses a markdown file
 let parseMarkdownFile (path: string) =
-    Node.fs.readFileSync(path).toString() |> Util.parseMarkdown
+    Node.fs.readFileSync(path).ToString() |> Util.parseMarkdown
 
 /// Parses a markdown string
 let parseMarkdown (str: string) =
@@ -66,19 +68,23 @@ module IO =
               match cont with Some c -> c() | None -> ()
           ))
 
+  let [<Emit("import.meta.url")>] importMetaUrl(): string = jsNative
+  let fileURLToPath (path: string): string = importMember "url"
+
   /// Resolves a path using the location of the target JS file
-  /// Note the function is inline so `__dirname` will belong to the calling file
-  let inline resolve (path: string) =
-      Node.path.resolve(NodeGlobals.__dirname, path)
+  let resolve (path: string) =
+      let __filename = fileURLToPath(importMetaUrl())
+      let __dirname = Node.path.dirname(__filename)
+      Node.path.resolve(__dirname, path)
 
   let writeFile (path: string) (content: string) =
       ensureDirExists (Node.path.dirname path) None
       Node.fs.writeFileSync(path, content)
 
   let readFile (path: string) =
-      Node.fs.readFileSync(path).toString()
+      Node.fs.readFileSync(path).ToString()
 
   /// Copy a file or directory. The directory can have contents. Like cp -r.
   /// Overwrites target files
   let copy (source: string) (target: string): unit =
-      fsExtra?copySync(source, target, createObj["overwrite" ==> true])
+      fsExtra?copySync(source, target, createObj ["overwrite" ==> true])

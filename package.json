@@ -1,23 +1,23 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "start-server": "live-server deploy",
-    "build-fable": "yarn fable-splitter src --run",
-    "start-fable": "yarn fable-splitter src -w --run",
+    "build-fable": "dotnet fable src --runScript",
+    "start-fable": "dotnet fable watch src --runScript",
     "start": "concurrently yarn:start-*",
     "build": "concurrently yarn:build-*",
     "deploy": "yarn build && gh-pages -d deploy"
   },
   "dependencies": {
-    "concurrently": "^4.0.1",
-    "fable-compiler": "^2.1.9",
-    "fable-splitter": "^2.1.2",
-    "fs-extra": "^7.0.1",
-    "gh-pages": "^2.0.1",
-    "highlight.js": "^9.13.1",
-    "live-server": "^1.2.0",
-    "marked": "^0.5.1",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "bulma": "0.9.3",
+    "concurrently": "^7.4.0",
+    "fs-extra": "^10.1.0",
+    "gh-pages": "^4.0.0",
+    "highlight.js": "^11.6.0",
+    "live-server": "^1.2.2",
+    "marked": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
