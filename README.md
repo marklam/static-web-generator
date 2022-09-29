@@ -17,7 +17,12 @@ Simple Fable Node.js app to generate static pages.The main advantages of this ap
 ## Installing and building
 
 - [Clone this repository](https://github.com/fable-compiler/static-web-generator/)
-- Install dependencies: `yarn`
-- Start compilation and live server: `yarn start`
+- Install dependencies: 
+  - `dotnet tool restore`
+  - `dotnet femto --resolve src`
+- Build the `deploy` folder:
+  - `yarn build`
+- Start the live server: 
+  - `yarn start`
 
 To start your own website, use this project as scaffold. You can also take advantage of [Paket Github dependencies](https://fsprojects.github.io/Paket/github-dependencies.html) to link `src/Helpers` from your project and get new additions more easily. For a more comprehensive example check the [Fable website](https://github.com/fable-compiler/fable-compiler.github.io).
